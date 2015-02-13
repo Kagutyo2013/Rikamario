@@ -19,14 +19,14 @@ void Player::inputAction(const Controller& controller){
 }
 
 void Player::update(){
-
+	sp_player->setPosition(m_x, m_y);
 }
 
 void Player::setDrawIn(const std::unique_ptr<Root>& root){
-	root->layers[1].push_back(sp_player);
+	root->layers[0].push_back(sp_player);
 }
 void Player::setDrawOut(const std::unique_ptr<Root>& root){
-	root->layers[1].remove(sp_player);
+	root->layers[0].remove(sp_player);
 }
 
 const int Player::getPosition(int& select)const{

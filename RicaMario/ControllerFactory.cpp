@@ -25,7 +25,7 @@ Controller* ControllerFactory::create(const unsigned int& player_number){
 ControllerFactory::ControllerFactory()
 {
 	// 1つ分のコントローラーを確保しておく
-	controllers.resize(1);
+	controllers.resize(4);
 }
 
 std::shared_ptr<Controller> ControllerFactory::find(const unsigned int& player_number){

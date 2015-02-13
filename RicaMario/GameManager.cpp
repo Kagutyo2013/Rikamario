@@ -44,7 +44,7 @@ int GameManager::draw() const{
 int GameManager::initialize(){
 	ChangeWindowMode(TRUE);//ƒEƒBƒ“ƒhƒEƒ‚[ƒh
 	if (DxLib_Init() == -1 || SetDrawScreen(DX_SCREEN_BACK) != 0) return -1;//‰Šú‰»‚Æ— ‰æ–Ê‰»
-	SetWindowText("‚r‚q‚o‚fì¬’†");
+	SetWindowText("‚q‚‰‚‹‚‚l‚‚’‚‰‚");
 	SetTransColor(0, 0, 0); //Žw’è‚µ‚½F‚ð“§–¾F‚Æ‚·‚é
 	SetDrawBright(0,0,0);//‹P“x‚ð0‚ÉƒZƒbƒg
 	root->input_mgr.push_back(root->controller_factory.find(1));
