@@ -3,25 +3,21 @@
 //#define DEBUG
 
 int GameManager::update(){
-	
+	fps_mgr->wait();
+	fps_mgr->update();
 	if (ProcessMessage() != 0){
 		return -1;
 	}
-	fps_mgr->update();
+	// ゲームの更新処理を書く
+	now_scene->update(now_scene, root);
+	for (const auto& obj : root->update_list){
+		obj->update();
+	}
+	// InputManagerを実行
+	root->input_mgr.exec();
 	if (now_scene == nullptr){
-		fps_mgr->wait();
 		return -1;
 	}
-	else{
-		// InputManagerを実行
-		root->input_mgr.exec();
-		// ゲームの更新処理を書く
-		now_scene->update(now_scene, root);
-		for (const auto& obj : root->update_list){
-			obj->update();
-		}
-	}
-	fps_mgr->wait();
 	return 0;
 }
 
