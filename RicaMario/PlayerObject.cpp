@@ -36,6 +36,7 @@ const int Player::getPosition(int& select)const{
 	if (select == 1){
 		return m_y;
 	}
+	return -1;
 }
 
 void Player::setPosition(const int& select, const int& arg){
@@ -44,5 +45,5 @@ void Player::setPosition(const int& select, const int& arg){
 	}
 	if (select == 1){
 		m_y = arg;
-	}
+	} 
 }
