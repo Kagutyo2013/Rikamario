@@ -42,6 +42,7 @@ void scene::Game::Init::update(Game& parent, std::unique_ptr<State<Game>>& new_s
 	parent.m_player->init(root, parent.m_tex_container, parent.m_sound_container);
 	parent.m_player->setPosition(0, 16);
 	parent.m_player->setPosition(1, 480-16);
+	parent.m_player->update();
 	parent.m_player->setDrawIn(root);
 	root->controller_factory.find(1)->push_back(parent.m_player);
 	SetDrawBright(255, 255,255);
