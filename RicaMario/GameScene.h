@@ -16,11 +16,20 @@ namespace scene{
 
 		//変数
 
+
 		//ポインタ
 		std::unique_ptr<State<scene::Game>> now_state;
 		std::shared_ptr<Player> m_player;
+		std::vector<std::vector<int>> m_mapdata;
 
 		//クラス
+		//初期化ステート
+		class Init :public State < Game > {
+		private:
+
+		public:
+			void update(Game& parent, std::unique_ptr<State<Game>>& new_state, const std::unique_ptr<Root>& root)override;
+		};
 		//ロードステート
 		class Load :public State<Game>{
 		private:
@@ -29,10 +38,10 @@ namespace scene{
 		public:
 			void update(Game& parent, std::unique_ptr<State<Game>>& new_state, const std::unique_ptr<Root>& root)override;
 		};
-		//初期化ステート
-		class Init :public State < Game > {
+		//設定ステート
+		class Set :public State < Game > {
 		private:
-			
+			void setMap(std::vector<std::vector<int>>& mapdata);
 		public:
 			void update(Game& parent, std::unique_ptr<State<Game>>& new_state, const std::unique_ptr<Root>& root)override;
 		};

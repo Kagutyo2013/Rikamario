@@ -17,6 +17,14 @@ private:
 	int m_x;
 	int m_y;
 
+	int m_vx;
+	int m_vy;
+
+	int m_timer_x;
+	int m_timer_y;
+
+	int m_jumpflag;
+
 	//プレイヤーのスプライト
 	std::shared_ptr<Sprite> sp_player;
 public:
@@ -39,5 +47,9 @@ public:
 	const int getPosition(int& select)const;
 
 	void setPosition(const int& select, const int& arg);
+
+	const int getFlag(int& select)const;
+
+	void setFlag(const int& select, const int& arg);
 };
 #endif 

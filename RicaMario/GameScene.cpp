@@ -1,7 +1,16 @@
 #include "GameScene.h"
 
-scene::Game::Game() :now_state(new Load()){
+scene::Game::Game() :now_state(new Init()){
 
+}
+
+//初期化ステート
+void scene::Game::Init::update(Game& parent, std::unique_ptr<State<Game>>& new_state, const std::unique_ptr<Root>& root){
+	parent.m_mapdata.resize(MAP_YSIZE);
+	for (int i = 0; i < MAP_YSIZE; i ++ ){
+		parent.m_mapdata.at(i).resize(MAP_XSIZE);
+	}
+	new_state.reset(new Load());
 }
 
 //ロードステート
@@ -22,7 +31,7 @@ void scene::Game::Load::update(Game& parent, std::unique_ptr<State<Game>>& new_s
 		return;
 	}
 
-	new_state.reset(new Init());
+	new_state.reset(new Set());
 }
 
 void scene::Game::Load::loadingTextures(AssetContainer<asset::Texture>& container){
@@ -35,18 +44,30 @@ void scene::Game::Load::loadingSounds(AssetContainer<asset::Sound>& container){
 
 }
 
-//初期化ステート
-void scene::Game::Init::update(Game& parent, std::unique_ptr<State<Game>>& new_state, const std::unique_ptr<Root>& root){
+//設定ステート
+void scene::Game::Set::update(Game& parent, std::unique_ptr<State<Game>>& new_state, const std::unique_ptr<Root>& root){
 	root->layers.resize(3);
+	setMap(parent.m_mapdata);
 	parent.m_player.reset(new Player());
 	parent.m_player->init(root, parent.m_tex_container, parent.m_sound_container);
 	parent.m_player->setPosition(0, 16);
-	parent.m_player->setPosition(1, 480-16);
+	parent.m_player->setPosition(1, 480 - 16);
 	parent.m_player->update();
 	parent.m_player->setDrawIn(root);
 	root->controller_factory.find(1)->push_back(parent.m_player);
-	SetDrawBright(255, 255,255);
+	SetDrawBright(255, 255, 255);
 	new_state.reset(new Play());
+}
+
+void scene::Game::Set::setMap(std::vector<std::vector<int>>& mapdata){
+	for (int i = 0; i < MAP_YSIZE; i++){
+		for (int j = 0; j < MAP_XSIZE; j++){
+			mapdata.at(i).at(j) = 0;
+		}
+	}
+	for (int j = 0; j < MAP_XSIZE; j++){
+		mapdata.at(MAP_YSIZE-1).at(j) = 1;
+	}
 }
 
 //プレイステート
