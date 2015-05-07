@@ -19,6 +19,11 @@ private:
 
 	int m_vx;
 	int m_vy;
+	int m_vx_max;
+	int m_vy_max;
+
+	int m_ax;
+	int m_ay;
 
 	int m_timer_x;
 	int m_timer_y;
