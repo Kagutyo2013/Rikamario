@@ -19,7 +19,8 @@ private:
 
 	int m_vx;
 	int m_vy;
-	int m_vx_max;
+	int m_vx_max_walk;
+	int m_vx_max_dash;
 	int m_vy_max;
 
 	int m_ax;
@@ -28,7 +29,9 @@ private:
 	int m_timer_x;
 	int m_timer_y;
 
+	//各種フラグ
 	int m_jumpflag;
+	int m_dashflag;
 
 	//プレイヤーのスプライト
 	std::shared_ptr<Sprite> sp_player;

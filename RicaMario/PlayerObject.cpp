@@ -5,11 +5,13 @@
 
 void Player::init(const std::unique_ptr<Root>& root, AssetContainer<asset::Texture>& tex_container, AssetContainer<asset::Sound>& sound_container){
 	initPlayerSprite(root, tex_container);
-	m_vx_max = 10;
+	m_vx_max_walk = 5;
+	m_vx_max_dash = 10;
 	m_vy_max = 10;
-	m_ax = 2;
+	m_ax = 1;
 	m_ay = 20;
 	m_jumpflag = 0;
+	m_dashflag = 0;
 }
 
 void Player::initPlayerSprite(const std::unique_ptr<Root>& root, AssetContainer<asset::Texture>& tex_container){
@@ -18,11 +20,21 @@ void Player::initPlayerSprite(const std::unique_ptr<Root>& root, AssetContainer<
 }
 
 void Player::inputAction(const Controller& controller){
-	if (controller.LeftKey->isBeingPressed()){
-		m_vx -= m_ax;
+	if (m_dashflag == 0){
+		if (controller.LeftKey->isBeingPressed()){
+			m_vx -= m_ax;
+		}
+		if (controller.RightKey->isBeingPressed()){
+			m_vx += m_ax;
+		}
 	}
-	if (controller.RightKey->isBeingPressed()){
-		m_vx += m_ax;
+	else{
+		if (controller.LeftKey->isBeingPressed()){
+			m_vx -= m_ax*2;
+		}
+		if (controller.RightKey->isBeingPressed()){
+			m_vx += m_ax*2;
+		}
 	}
 	if (!controller.RightKey->isBeingPressed() && !controller.LeftKey->isBeingPressed()){
 		if (m_vx > 0){
@@ -33,20 +45,37 @@ void Player::inputAction(const Controller& controller){
 		}
 	}
 
-	if (controller.AButton->isBeingPressed()&&m_jumpflag==0){
+	if (controller.AButton->isPressed()&&m_jumpflag==0){
 		m_vy = -m_ay;
 		m_jumpflag = 1;
+	}
+	if (controller.BButton->isBeingPressed()){
+		m_dashflag = 1;
+	}
+	else{
+		m_dashflag = 0;
 	}
 }
 
 void Player::update(){
-	if (m_vx > m_vx_max){
-		m_vx = m_vx_max;
+	if (m_dashflag == 0){
+		if (m_vx > m_vx_max_walk){
+			m_vx -= 1;
+		}
+		if (m_vx < -1 * m_vx_max_walk){
+			m_vx += 1;
+		}
 	}
-	if (m_vx < -1*m_vx_max){
-		m_vx = -1*m_vx_max;
+	else{
+		if (m_vx > m_vx_max_dash){
+			m_vx -= 1;
+		}
+		if (m_vx < -1 * m_vx_max_dash){
+			m_vx += 1;
+		}
 	}
-	if (m_y <= 480 - 16 && m_y >= 16){
+	
+	if (m_y <= SCREEN_YSIZE - sp_player->getYSize() / 2 && m_y >= sp_player->getYSize() / 2){
 		m_vy += 1;
 	}
 	m_x += m_vx;
