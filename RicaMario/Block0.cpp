@@ -3,7 +3,7 @@
 
 //loadån
 
-void Block0::loadTexture(const std::unique_ptr<Root>& root){
+void Block0::loadTexture(const std::unique_ptr<Root>& root) {
 	auto new_tex = assetfactory::TextureFactory::createFromFile("image/block0.bmp");
 	root->tex_container.registerObject(new_tex, "Block0");
 }
