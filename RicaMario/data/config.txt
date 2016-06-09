@@ -1,0 +1,9 @@
+[player]
+vel_walk=2//歩き速度の上限(pixel/frame)
+vel_dash=5//ダッシュ速度の上限(pixel/frame)
+acc_walk=0.1//歩き加速度(pixel/frame^2)
+acc_dash=0.1//ダッシュ加速度(pixel/frame^2)
+pow_jump=60//ジャンプ力(pixel/frame^2)
+
+[etc]
+gravity=1//重力(pixel/frame^2)

@@ -6,9 +6,6 @@
 #include "SoundFactory.h"
 #include "Sprite.h"
 #include "Root.h"
-#include "AssetContainer.h"
-#include "Texture.h"
-#include "Sound.h"
 
 class Player:public component::OperableObject{
 private:
@@ -37,10 +34,13 @@ private:
 	std::shared_ptr<Sprite> sp_player;
 public:
 	//初期化系
-	void init(const std::unique_ptr<Root>& root, AssetContainer<asset::Texture>& tex_container, AssetContainer<asset::Sound>& sound_container);
+	void init();
+
+	//load系
+	void loadTexture(const std::unique_ptr<Root>& root);
 
 	//プレイヤースプライトのセット
-	void initPlayerSprite(const std::unique_ptr<Root>& root, AssetContainer<asset::Texture>& tex_container);
+	void setPlayerSprite(const std::unique_ptr<Root>& root);
 
 	//更新系
 	void inputAction(const Controller& controller)override;

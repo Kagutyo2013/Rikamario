@@ -1,14 +1,12 @@
 #ifndef _GAME_SCENE_H
 #define _GAME_SCENE_H
 
-#define MAP_XSIZE 20
-#define MAP_YSIZE 15
-
 #include "SceneBase.h"
 #include "State.h"
 #include "Sprite.h"
 #include "TextureFactory.h"
 #include "PlayerObject.h"
+#include "MapClass.h"
 
 namespace scene{
 	class Game :public scene::Base{
@@ -20,7 +18,7 @@ namespace scene{
 		//ポインタ
 		std::unique_ptr<State<scene::Game>> now_state;
 		std::shared_ptr<Player> m_player;
-		std::vector<std::vector<int>> m_mapdata;
+		std::unique_ptr<MapClass> m_map;
 
 		//クラス
 		//初期化ステート
@@ -33,15 +31,12 @@ namespace scene{
 		//ロードステート
 		class Load :public State<Game>{
 		private:
-			void loadingTextures(AssetContainer<asset::Texture>& container);
-			void loadingSounds(AssetContainer<asset::Sound>& container);
 		public:
 			void update(Game& parent, std::unique_ptr<State<Game>>& new_state, const std::unique_ptr<Root>& root)override;
 		};
 		//設定ステート
 		class Set :public State < Game > {
 		private:
-			void setMap(std::vector<std::vector<int>>& mapdata);
 		public:
 			void update(Game& parent, std::unique_ptr<State<Game>>& new_state, const std::unique_ptr<Root>& root)override;
 		};

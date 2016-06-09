@@ -3,8 +3,7 @@
 #define SCREEN_YSIZE 480
 
 
-void Player::init(const std::unique_ptr<Root>& root, AssetContainer<asset::Texture>& tex_container, AssetContainer<asset::Sound>& sound_container){
-	initPlayerSprite(root, tex_container);
+void Player::init(){
 	m_vx_max_walk = 5;
 	m_vx_max_dash = 10;
 	m_vy_max = 10;
@@ -14,27 +13,23 @@ void Player::init(const std::unique_ptr<Root>& root, AssetContainer<asset::Textu
 	m_dashflag = 0;
 }
 
-void Player::initPlayerSprite(const std::unique_ptr<Root>& root, AssetContainer<asset::Texture>& tex_container){
+void Player::loadTexture(const std::unique_ptr<Root>& root){
+	//主人公の画像データ
+	auto new_tex = assetfactory::TextureFactory::createFromFile("image/char.bmp");
+	root->tex_container.registerObject(new_tex, "Player");
+}
+
+void Player::setPlayerSprite(const std::unique_ptr<Root>& root){
 	sp_player.reset(new Sprite());
-	sp_player->setTexture(tex_container.findAssetByname("Player"));
+	sp_player->setTexture(root->tex_container.findAssetByname("Player"));
 }
 
 void Player::inputAction(const Controller& controller){
-	if (m_dashflag == 0){
-		if (controller.LeftKey->isBeingPressed()){
-			m_vx -= m_ax;
-		}
-		if (controller.RightKey->isBeingPressed()){
-			m_vx += m_ax;
-		}
+	if (controller.LeftKey->isBeingPressed()){
+		m_vx -= m_ax;
 	}
-	else{
-		if (controller.LeftKey->isBeingPressed()){
-			m_vx -= m_ax*2;
-		}
-		if (controller.RightKey->isBeingPressed()){
-			m_vx += m_ax*2;
-		}
+	if (controller.RightKey->isBeingPressed()){
+		m_vx += m_ax;
 	}
 	if (!controller.RightKey->isBeingPressed() && !controller.LeftKey->isBeingPressed()){
 		if (m_vx > 0){
@@ -66,7 +61,7 @@ void Player::update(){
 			m_vx += 1;
 		}
 	}
-	else{
+	if (m_dashflag == 1){
 		if (m_vx > m_vx_max_dash){
 			m_vx -= 1;
 		}
@@ -78,31 +73,42 @@ void Player::update(){
 	if (m_y <= SCREEN_YSIZE - sp_player->getYSize() / 2 && m_y >= sp_player->getYSize() / 2){
 		m_vy += 1;
 	}
+
 	m_x += m_vx;
 	m_y += m_vy;
-	if (m_x < sp_player->getXSize()/2){
+
+	if (m_x < sp_player->getXSize() / 2){
 		m_x = sp_player->getXSize() / 2;
+		m_vx = 0;
 	}
+
 	if (m_x > SCREEN_XSIZE - sp_player->getXSize() / 2){
 		m_x = SCREEN_XSIZE - sp_player->getXSize() / 2;
+		m_vx = 0;
 	}
+
 	if (m_y < sp_player->getYSize() / 2){
 		m_y = sp_player->getYSize() / 2;
+		m_vy = 0;
 	}
+
 	if (m_y > SCREEN_YSIZE - sp_player->getYSize() / 2){
 		m_y = SCREEN_YSIZE - sp_player->getYSize() / 2;
+		m_vy = 0;
 	}
-	if (m_y == SCREEN_YSIZE - sp_player->getYSize() / 2&&m_jumpflag==1){
+
+	if (m_y == SCREEN_YSIZE - sp_player->getYSize() / 2 && m_jumpflag == 1){
 		m_jumpflag = 0;
 	}
+
 	sp_player->setPosition(m_x, m_y);
 }
 
 void Player::setDrawIn(const std::unique_ptr<Root>& root){
-	root->layers[0].push_back(sp_player);
+	root->layers[1].push_back(sp_player);
 }
 void Player::setDrawOut(const std::unique_ptr<Root>& root){
-	root->layers[0].remove(sp_player);
+	root->layers[1].remove(sp_player);
 }
 
 const int Player::getPosition(int& select)const{
